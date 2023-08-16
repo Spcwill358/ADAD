@@ -106,7 +106,7 @@ function Get-Report {
 
 function Get-Export {
     Write-Output ('NOTE: You do not need to add the .csv extention. This is done for you.')
-    $Export = Read-Host ('What would you like to call the .csv export file?')
+    $global:Export = Read-Host ('What would you like to call the .csv export file?')
     Get-Report | Export-Csv -Path ~\$Export.csv -NoTypeInformation
 }
 
@@ -133,6 +133,7 @@ elseif ($Action -eq 'export') {
 }
 else {
     Get-Export
+    $Path = '~\' + $global:Export + '.csv' 
     $ADUsers = Import-Csv -Path ~\Documents\$Export.csv
     foreach ($User in $ADUsers) {
         $Name = $User.SAMAccountName
