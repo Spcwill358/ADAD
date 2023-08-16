@@ -134,7 +134,7 @@ elseif ($Action -eq 'export') {
 else {
     Get-Export
     $Path = '~\' + $global:Export + '.csv' 
-    $ADUsers = Import-Csv -Path ~\Documents\$Export.csv
+    $ADUsers = Import-Csv -Path $Path
     foreach ($User in $ADUsers) {
         $Name = $User.SAMAccountName
         Disable-ADAccount -Identity "$Name"
