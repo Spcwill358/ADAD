@@ -100,19 +100,14 @@ $title = @"
 Write-Output $title
 
 #Function to gather all inactive user from a specified date
-Get-Report {
-    GetADUser -Filter { LastLogonTimeStamp -lt $Time } -Properties * | Select-Object Name, SamAccountName, LastLogonDate
+function Get-Report {
+    Get-ADUser -Filter { LastLogonTimeStamp -lt $Time } -Properties * | Select-Object Name, SamAccountName, LastLogonDate
 }
 
-Set-Export {
-    $Export = Read-Host ('What would you like to call the .csv export file?')
-    return $Export
-}
-
-Get-Export {
+function Get-Export {
     Write-Output ('NOTE: You do not need to add the .csv extention. This is done for you.')
-    Set-Export
-    Get-Report | Export-Csv -Path ~\$Export.csv -NoTypeInformation
+    $global:Export = Read-Host ('What would you like to call the .csv export file?')
+    Get-Report | Export-Csv -Path ~\$global:Export.csv -NoTypeInformation
 }
 
 #Creates a 1.5 second delay before displaying the next output text
@@ -138,7 +133,8 @@ elseif ($Action -eq 'export') {
 }
 else {
     Get-Export
-    $ADUsers = Import-Csv -Path ~\Documents\$Export.csv
+    $Path = '~\' + $global:Export + '.csv'
+    $ADUsers = Import-Csv -Path $Path
     foreach ($User in $ADUsers) {
         $Name = $User.SAMAccountName
         Disable-ADAccount -Identity "$Name"
