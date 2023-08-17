@@ -43,7 +43,7 @@ if ($args[0] -eq 'help' -or $args.Count -ne 2) {
 + The export option also creates a report and prompts the user to create a name +
 + of a file that the report will be redirected into. The format will be a .csv  +
 + file. Use this option if you are looking to create a log, but do not want to  +
-+ display any of the accounts.                                                  +
++ disable any of the accounts.                                                  +
 +                                                                               +
 +++++++++++++++++++++++++++++++++++++[disable]+++++++++++++++++++++++++++++++++++
 +                                                                               +
@@ -100,13 +100,18 @@ $title = @"
 Write-Output $title
 
 #Function to gather all inactive user from a specified date
-function Get-Report {
-    Get-ADUser -Filter { LastLogonTimeStamp -lt $Time } -Properties * | Select-Object Name, SamAccountName, LastLogonDate
+Get-Report {
+    GetADUser -Filter { LastLogonTimeStamp -lt $Time } -Properties * | Select-Object Name, SamAccountName, LastLogonDate
 }
 
-function Get-Export {
+Set-Export {
+    $Export = Read-Host ('What would you like to call the .csv export file?')
+    return $Export
+}
+
+Get-Export {
     Write-Output ('NOTE: You do not need to add the .csv extention. This is done for you.')
-    $global:Export = Read-Host ('What would you like to call the .csv export file?')
+    Set-Export
     Get-Report | Export-Csv -Path ~\$Export.csv -NoTypeInformation
 }
 
@@ -133,8 +138,7 @@ elseif ($Action -eq 'export') {
 }
 else {
     Get-Export
-    $Path = '~\' + $global:Export + '.csv' 
-    $ADUsers = Import-Csv -Path $Path
+    $ADUsers = Import-Csv -Path ~\Documents\$Export.csv
     foreach ($User in $ADUsers) {
         $Name = $User.SAMAccountName
         Disable-ADAccount -Identity "$Name"
