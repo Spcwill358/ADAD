@@ -8,4 +8,4 @@ Systems Administrators.
 Number|Name of Script| Brief Overview of its Purpose
 ------|--------------|------------------------------
    1  |InActive_v1_0 | Searches AD for accounts that have not been logged into for a specified period of time, then disables the account
-   2  |Ghosted_v1_0  | Searched AD for account that were never logged into and disables the account
+   2  |Ghosted_v1_0  | Searched AD for account that were never logged into and disables the account (Will be uploaded by August 26, 2023)
