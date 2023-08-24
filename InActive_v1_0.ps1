@@ -5,7 +5,7 @@ if ($args[0] -eq 'help' -or $args.Count -ne 2) {
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +                                                                               +
-+---------------------- Inactive AD User Finder v1.0 Help ----------------------+
++---------------------- Inactive AD User Finder v1.01 Help ---------------------+
 +                                                                               +
 +++++++++++++++++++++++++++++++++++++[usage]+++++++++++++++++++++++++++++++++++++
 +                                                                               +
@@ -88,7 +88,7 @@ $title = @"
 +                   ==== =  =  =  = ===  =  ===     =  ===                      +
 +                                                                               +
 +-------------------------------------------------------------------------------+			
-+---------------------    Inactive AD User Finder v1.0     ---------------------+			
++---------------------    Inactive AD User Finder v1.01    ---------------------+			
 +-------------------------------------------------------------------------------+		      
 +-------------------------------------------------------------------------------+
 +---------------------    Created by: Michael Williams     ---------------------+
@@ -101,7 +101,7 @@ Write-Output $title
 
 #Function to gather all inactive user from a specified date
 function Get-Report {
-    Get-ADUser -Filter { LastLogonTimeStamp -lt $Time } -Properties * | Select-Object Name, SamAccountName, LastLogonDate
+    Get-ADUser -Filter { (LastLogonTimeStamp -lt $Time) -and (enabled -eq $True) } -Properties * | Select-Object Name, SamAccountName, LastLogonDate
 }
 
 function Get-Export {
