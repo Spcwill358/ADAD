@@ -98,7 +98,7 @@ function Get-Report {
 }
 
 function Get-Export {
-    Write-Output ('NOTE: You do not need to add the .csv extention. This is done for you.')
+    Write-Output ('NOTE: You do not need to add the .csv extension. This is done for you.')
     $global:Export = Read-Host ('What would you like to call the .csv export file?')
     Get-Report | Export-Csv -Path ~\$global:Export.csv -NoTypeInformation
 }
